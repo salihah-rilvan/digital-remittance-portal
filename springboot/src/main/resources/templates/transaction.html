@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90680653-2"></script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Submit New</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+        id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+    <link th:href="@{/css/theme.css}" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div id="loader"></div>
+    <div class="header">
+        <div class="container">
+            <div class="header-left">
+                <a th:href="@{/home}" class="logo"><span></span>G1T2</a>
+                <!-- <a href="" id="azMenuShow" class="header-menu-icon d-lg-none"><span></span></a> -->
+            </div>
+            <!-- add header-left if needed-->
+            <div class="header-menu">
+                <ul class="nav">
+                    <!-- <li class="nav-item active">
+                <a th:href="@{/home}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i>Home</a>
+              </li> -->
+                    <li class="nav-item active">
+                        <a th:href="@{/submitNew}" class="nav-link"><i class="typcn typcn-document-add"></i>Submit
+                            Transactions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/header}" class="nav-link"><i class="typcn typcn-edit"></i>Submit Field
+                            Mapping</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/settings}" class="nav-link"><i class="typcn typcn-edit"></i>Settings</a>
+                    </li>
+                </ul>
+            </div><!-- header-menu -->
+
+            <div class="dropdown profile-menu">
+                <p class="text-center"><a th:href="@{/logout}">Sign out</a></p>
+            </div>
+
+        </div><!-- container -->
+    </div><!-- header -->
+
+    <div class="content content-dashboard">
+        <div class="container">
+            <div class="content-body">
+                <div class="dashboard-one-title">
+                    <div>
+                        <h3>Your Transactions</h3>
+                        <button class="btn btn-gray-700" onclick="ExportToExcel('xlsx')">Export</button>
+
+                        <!-- <p class="dashboard-text">Your one-stop remittance portal.</p> -->
+                    </div>
+
+                </div><!-- dashboard-one-title -->
+
+                <div class="dashboard-nav">
+
+                </div>
+
+                <div class="row row-sm mg-b-20">
+                    <div class="col-lg-7 col-xl-12 mg-t-20 mg-lg-t-0">
+                        <div class="card card-table-two">
+                            <h6 class="card-title"> Transactions</h6>
+                            <p class="content-text mg-b-20">Here are submission status:</p>
+                            <div class="table-responsive">
+                                <table class="table table-striped" style="max-height: 400px;">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tr th:each="transaction, i: ${transactions}">
+                                        <th scope="row" th:text="${i.index + 1}"></th>
+                                        <td th:text='${transaction.getJsonNodeArgsInfo().get("amount")}'></td>
+                                        <td th:text="${transaction.dateTime}"></td>
+                                        <td th:text="${transaction.status}"></td>
+                                    </tr>
+                                </table>
+
+                            </div><!-- table-responsive -->
+                            <button class="read-more-btn" title="Read More">Read More</button>
+
+                            <!-- <p class="content-text mg-b-20">Please check your transactions.</p> -->
+                            <div class="read-more-content">
+                                <span>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped" id="table1">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">ID</th>
+                                                    <!-- <th scope="col">Sender</th> -->
+                                                    <!-- <th scope="col">Receiver</th> -->
+                                                    <th scope="col">Amount</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Message</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tr th:each="transaction, i: ${transactions}">
+                                                <th scope="row" th:text="${i.index + 1}"></th>
+                                                <!-- <td th:text="${transaction.senderId}"></td>
+                                        <td th:text="${transaction.receiverId}"></td> -->
+                                                <td th:text='${transaction.getJsonNodeArgsInfo().get("amount")}'></td>
+                                                <td th:text="${transaction.dateTime}"></td>
+                                                <td th:text="${transaction.status}"></td>
+                                                <td>
+                                                    <ul>
+                                                        <li th:each="errorMsg :${error.get(transaction)}">
+                                                            <p th:text="${errorMsg}"></p>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+                                    </div><!-- table-responsive -->
+                                </span>
+                            </div>
+                        </div><!-- card -->
+
+                    </div><!-- col-lg -->
+
+                </div><!-- row -->
+
+            </div><!-- content-body -->
+        </div>
+    </div><!-- content -->
+    </div>
+
+    <div class="footer ht-40">
+        <div class="container ht-100p pd-t-0-f">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © g1t2.com</span>
+        </div><!-- container -->
+    </div><!-- footer -->
+
+
+    <script>
+        $(document).ready(function () {
+            $(".read-more-btn").click(function () {
+                $(this).next().slideToggle();
+                if ($(this).text() == "Read More") {
+                    $(this).text("Read Less");
+                } else {
+                    $(this).text("Read More");
+                }
+            });
+        });
+
+
+        function ExportToExcel(type, fn, dl) {
+            var elt = document.getElementById('table1');
+            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('Results.' + (type || 'xlsx')));
+        }
+
+    </script>
+
+
+</body>
+
+</html>

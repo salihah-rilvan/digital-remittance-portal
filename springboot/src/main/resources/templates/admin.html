@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90680653-2"></script>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Admin</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+    id="bootstrap-css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+  <link th:href="@{/css/theme.css}" rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="header">
+    <div class="container">
+
+      <div class="header-left">
+        <a th:href="@{/admin}" class="logo"><span></span>G1T2</a>
+      </div>
+      <div class="header-menu">
+        <ul class="nav">
+          <li class="nav-item active">
+            <a th:href="@{/admin}" class="nav-link"><i class="typcn typcn-document-add"></i>SSOTs</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/adminTransactions}" class="nav-link"><i class="typcn typcn-edit"></i>Failed Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/adminSettings}" class="nav-link"><i class="typcn typcn-edit"></i>Settings</a>
+          </li>
+        </ul>
+      </div><!-- header-menu -->
+
+      <div class="dropdown profile-menu">
+        <p class="text-center"><a th:href="@{/logout}">Sign out</a></p>
+      </div>
+
+    </div><!-- container -->
+  </div><!-- header -->
+
+  <div class="content content-dashboard">
+    <div class="container">
+      <div class="content-body">
+        <div class="dashboard-one-title">
+          <div>
+            <h2>Hi <span th:utext="${name}"></span>, Welcome!</h2>
+            <p class="dashboard-text">Customise your portal here.</p>
+          </div>
+        </div>
+
+        <div class="row row-sm mg-b-20">
+          <div class="col-lg-7 col-xl-12 mg-t-20 mg-lg-t-0" style="margin-bottom: 5px;">
+            <div class="card card-table-one" style="overflow: auto; ">
+              <!-- Create SSOT form -->
+              <div class="alert alert-success" role="alert" th:if="${msg}" th:utext="${msg}"></div>
+
+              <form th:action="@{/admin}" method="post">
+
+                <h6 class="card-title">Create new SSOT</h6>
+                <input type="text" class="form-control-m" name="ssotName" placeholder="Enter new SSOT name">
+                <br>
+                <button type="submit" class="btn btn-gray-700">Submit</button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="row row-sm mg-b-20">
+
+          <!-- Create Success Message if Post was sucessful -->
+          <div class="col-lg-7 col-xl-6 mg-t-20 mg-lg-t-0">
+            <div class="card card-table-one" style="overflow: auto;">
+              <!-- Create SSOT form -->
+              <div class="alert alert-success" role="alert" th:if="${msg2}" th:utext="${msg2}"></div>
+              <form method="post" th:action="@{/adminEditSsot}">
+                <h6 class="card-title">Rename SSOTs</h6>
+                <!-- table-->
+                <div class="table-responsive ">
+                  <table class="table table-striped " style="height: 400px; margin-bottom: 5px;">
+                    <thead>
+                      <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Current Ssot Name</th>
+                        <th scope="col">New Ssot Name</th>
+                      </tr>
+                    </thead>
+                    <tr th:each="ssot, i: ${ssotList}">
+                      <th scope="row" th:text="${i.index + 1}"></th>
+                      <td th:value="${ssot.ssotId}" th:text="${ssot.ssotName}"></td>
+                      <td><input type="text" th:name="${ssot.ssotId}" th:value="${ssot.ssotName}"></td>
+
+                    </tr>
+                  </table>
+                </div><!-- table-responsive -->
+                <button type="submit" class="btn btn-gray-700" style="margin-top: 10px;">Save changes</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-lg-7 col-xl-6 mg-t-20 mg-lg-t-0">
+            <div class="card card-table-one">
+              <div class="alert alert-success" role="alert" th:if="${msg3}" th:utext="${msg3}"></div>
+
+              <form method="post" th:action="@{/adminDeleteSsot}">
+
+                <h6 class="card-title">Your SSOTs</h6>
+
+
+                <!-- table-->
+                <div class="table-responsive ">
+                  <table class="table table-striped " style="height: 400px; margin-bottom: 5px;">
+                    <thead>
+                      <tr>
+                        <th scope="col">No.</th>
+                        <th scope="col">Ssot Name</th>
+                        <th scope="col">Select</th>
+                      </tr>
+                    </thead>
+                    <tr th:each="ssot, i: ${ssotList}">
+                      <th scope="row" th:text="${i.index + 1}"></th>
+                      <td class="ssotName" th:value="${ssot.ssotId}" th:text="${ssot.ssotName}"></td>
+                      <td> <input class="form-check-input" th:value="${ssot.ssotId}" type="checkbox" name="deleteSsot"
+                          style="position: relative; margin-left: 20px;"></td>
+                    </tr>
+                  </table>
+                </div><!-- table-responsive -->
+                <button type="submit" class="btn btn-gray-700" style="margin-top: 10px;">Delete selected</button>
+
+              </form>
+              <!--<button class="btn btn-primary col-4" th:href="${editSsot}">Edit</button>-->
+
+            </div><!-- card -->
+          </div><!-- col-lg -->
+        </div><!-- row -->
+
+
+      </div><!-- content-body -->
+      <!--TABLE FOR EDITING SSOT STARTS HERE-->
+
+      <!--TABLE FOR EDITING SSOT ENDS HERE-->
+    </div>
+  </div><!-- content -->
+
+  <div class="footer ht-40">
+    <div class="container ht-100p pd-t-0-f">
+      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © g1t2.com</span>
+    </div><!-- container -->
+  </div><!-- footer -->
+
+</body>
+
+</html>

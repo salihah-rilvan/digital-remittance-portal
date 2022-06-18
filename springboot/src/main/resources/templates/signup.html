@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<head>
+  <title>Sign up</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+    id="bootstrap-css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+  <link th:href="@{/css/theme.css}" rel="stylesheet" />
+
+</head>
+
+
+<body class="body">
+  <div class="alert alert-success" role="alert" th:if="${msg}" th:utext="${msg}"></div>
+  <div class="alert alert-danger" role="alert" th:if="${msg2}" , th:utext="${msg2}"></div>
+  <div class="signin-wrapper">
+
+    <div class="card-signin">
+
+      <div class="signin-header">
+
+        <form class="form-horizontal" role="form" method="POST" th:action="@{/signup}" th:object="${sender}">
+          <h1 class="logo">G1T2</h1>
+          <!-- <div class="form-group"> -->
+          <h3 class="h mb-3 font-weight-bold">Sign up now!</h3>
+          <label for="inputEmail" class="col-form-label-lg">Company Name</label>
+          <input type="text" th:field="*{company}" class="form-control" id="company" placeholder="G1T2" required
+            autofocus>
+          <label for="inputEmail" class="col-form-label-lg">Email</label>
+          <input type="email" id="email" name="email" th:field="*{email}" class="form-control"
+            placeholder="g1t2@gmail.com" required autofocus>
+          <label for="inputPassword" class="col-form-label-lg">Password</label>
+          <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password"
+            required>
+          <button type="submit" class="btn btn-lg btn-primary btn-block"><i class="fa fa-user-plus"></i>Register
+          </button>
+          <a th:href="@{/login}" class="btn btn-lg btn-default btn-block"> Log In</a>
+          <!-- <a href="/cancel/1" class="btn btn-default">Cancel</a> -->
+
+          <div class="signin-footer"></div>
+          <!-- </div> -->
+        </form>
+      </div>
+    </div>
+  </div>
+</body>

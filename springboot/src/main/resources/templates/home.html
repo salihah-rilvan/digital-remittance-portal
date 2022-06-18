@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90680653-2"></script>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Home</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+    id="bootstrap-css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+  <link th:href="@{/css/theme.css}" rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="header">
+    <div class="container">
+      <div class="header-left">
+        <a th:href="@{/home}" class="logo"><span></span>G1T2</a>
+        <!-- <a href="" id="azMenuShow" class="header-menu-icon d-lg-none"><span></span></a> -->
+      </div>
+      <!-- add header-left if needed-->
+      <div class="header-menu">
+        <ul class="nav">
+          <!-- <li class="nav-item active">
+              <a th:href="@{/home}" class="nav-link"><i class="typcn typcn-chart-area-outline"></i>Home</a>
+            </li> -->
+          <li class="nav-item">
+            <a th:href="@{/submitNew}" class="nav-link"><i class="typcn typcn-document-add"></i>Submit Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/header}" class="nav-link"><i class="typcn typcn-edit"></i>Submit Field Mapping</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/settings}" class="nav-link"><i class="typcn typcn-edit"></i>Settings</a>
+          </li>
+        </ul>
+      </div><!-- header-menu -->
+
+      <div class="dropdown profile-menu">
+        <p class="text-center"><a th:href="@{/logout}">Sign out</a></p>
+      </div>
+
+    </div><!-- container -->
+  </div><!-- header -->
+
+  <div class="content content-dashboard">
+    <div class="container">
+      <div class="content-body">
+        <div class="dashboard-one-title">
+          <div>
+            <!-- <h2 class="dashboard-title">Welcome back!</h2> -->
+            <h2>Hi <span th:utext="${msg}"></span>, Welcome!</h2>
+            <p class="dashboard-text">Your one-stop remittance portal.</p>
+          </div>
+
+        </div><!-- dashboard-one-title -->
+
+        <div class="dashboard-nav">
+
+        </div>
+
+
+        <div class="row row-sm mg-b-20">
+          <div class="col-lg-7 col-xl-8 mg-t-20 mg-lg-t-0">
+            <div class="card card-table-one">
+
+              <h6 class="card-title">Your Transactions</h6>
+              <p class="content-text mg-b-20" th:unless="${#lists.isEmpty(allTransactions)}">Check your trasaction
+                status here!</p>
+              <p class="content-text mg-b-20" th:if="${#lists.isEmpty(allTransactions)}">No Transactions</p>
+
+
+              <div class="table-responsive">
+                <table class="table table-striped" th:unless="${#lists.isEmpty(allTransactions)}"
+                  style="height: 400px;">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <!-- <th scope="col">Amount</th> -->
+                      <th scope="col">Date</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Country</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Receiver First Name</th>
+                      <th scope="col">Receiver Last Name</th>
+                      <!-- <th scope="col">Info</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="transaction, i: ${allTransactions}">
+                      <th scope="row" th:text="${i.index + 1}"></th>
+
+                      <!-- <td th:text="${transaction.amount}"></td> -->
+                      <td th:text="${transaction.dateTime}"></td>
+                      <td th:text="${transaction.status}"></td>
+                      <td th:text='${transaction.getJsonNodeArgsInfo().get("receiver_country")}'></td>
+                      <td th:text='${transaction.getJsonNodeArgsInfo().get("amount")}'> </td>
+                      <td th:text='${transaction.getJsonNodeArgsInfo().get("receiver_first_name")}'></td>
+                      <td th:text='${transaction.getJsonNodeArgsInfo().get("receiver_last_name")}'></td>
+                      <!-- <td th:text="${transaction.getJsonNodeArgsInfo()}"></td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+            </div>
+          </div><!-- col-lg -->
+
+          <div class="col-lg-4 mg-t-20 mg-lg-t-0">
+            <div class="card card-dashboard-four">
+              <div class="col-lg" style="position:static; min-height: fit-content;">
+                <img class="rounded mx-auto d-block" src="../img/face.jpg" alt="">
+              </div>
+
+              <div class="content-label mg-b-5">
+                <h2 th:utext="${msg}"></h2>
+              </div>
+              <!-- <p class="mg-b-20">A basic form control input and textarea with disabled and readonly mode.</p> -->
+              <div class="content-header-right">
+                <div class="media">
+                  <div class="media-body">
+                    <label>Today</label>
+                    <h4><span id="clock"></span></h4>
+                  </div><!-- media-body -->
+                </div><!-- media -->
+              </div>
+              <div class="card-body row">
+              </div><!-- card-body -->
+            </div><!-- card-dashboard-four -->
+          </div><!-- col -->
+        </div><!-- row -->
+        <div class="row row-sm mg-b-20 mg-lg-b-0">
+        </div><!-- row -->
+      </div><!-- content-body -->
+    </div>
+  </div><!-- content -->
+
+  <div class="footer ht-40">
+    <div class="container ht-100p pd-t-0-f">
+      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © g1t2.com</span>
+    </div><!-- container -->
+  </div><!-- footer -->
+
+  <script type="text/javascript">
+    var clockElement = document.getElementById('clock');
+    function clock() {
+      clockElement.textContent = new Date().toString();
+    }
+    setInterval(clock, 1000);
+
+    $.get("/Home/transactions", { id: '67', name: 'Deepak' }, function (data) {
+      alert(data.id); // display id value which is returned from the action method  
+      alert(data.name);//display name value which is returned from the action method  
+    });  
+  </script>
+
+  <script th:inline="javascript">
+    window.onload = function checkSsotNum() {
+      // /*<![CDATA[*/
+      var fields = /*[[${session.noOfFields}]]*/ 'default';
+      var ssots = /*[[${session.noOfSsots}]]*/ 'default';
+
+      if (parseInt(fields) < parseInt(ssots)) {
+        alert("You haven't mapped your fields to SSOTs or a new SSOT has been added.")
+      }
+    }
+  </script>
+</body>
+
+</html>

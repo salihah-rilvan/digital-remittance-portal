@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90680653-2"></script>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Admin</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+    id="bootstrap-css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
+  <link th:href="@{/css/theme.css}" rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="header">
+    <div class="container">
+
+      <div class="header-left">
+        <a th:href="@{/admin}" class="logo"><span></span>G1T2</a>
+        <!-- <a href="" id="azMenuShow" class="header-menu-icon d-lg-none"><span></span></a> -->
+      </div>
+      <!-- add header-left if needed-->
+      <div class="header-menu">
+        <ul class="nav">
+          <li class="nav-item">
+            <a th:href="@{/admin}" class="nav-link"><i class="typcn typcn-document-add"></i>SSOTs</a>
+          </li>
+          <li class="nav-item active">
+            <a th:href="@{/adminTransactions}" class="nav-link"><i class="typcn typcn-edit"></i>Failed Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a th:href="@{/adminSettings}" class="nav-link"><i class="typcn typcn-edit"></i>Settings</a>
+          </li>
+        </ul>
+      </div><!-- header-menu -->
+
+      <div class="dropdown profile-menu">
+        <p class="text-center"><a th:href="@{/logout}">Sign out</a></p>
+      </div>
+
+    </div><!-- container -->
+  </div><!-- header -->
+
+  <div class="content content-dashboard">
+    <div class="container">
+      <div class="content-body">
+        <div class="dashboard-one-title">
+
+          <h3>Transactions</h3>
+
+        </div><!-- dashboard-one-title -->
+
+        <div class="dashboard-nav">
+
+        </div>
+
+        <div class="row row-sm mg-b-20">
+          <div class="col-lg-7 col-xl-12 mg-t-20 mg-lg-t-0">
+            <div class="card card-table-one">
+              <h6 class="card-title">Transaction Failures</h6>
+              <p class="dashboard-text">Top 500 results</p>
+
+              <p class="content-text mg-b-20" th:if="${#lists.isEmpty(failList)}">No Transactions</p>
+              <div class="table-responsive" style="height: 300px; overflow-y:scroll;">
+                <table id="table1" class="table table-striped " th:unless="${#lists.isEmpty(failList)}"
+                  style="height: 400px; margin-bottom: 5px;">
+                  <thead>
+                    <tr>
+                      <th style="width:50px;" scope="col">ID</th>
+                      <!-- <th scope="col">Amount</th> -->
+                      <th scope="col">Date</th>
+                      <th scope="col">Status</th>
+                      <div th:each="fieldName : ${failList[0].getJsonNodeArgsInfo().fieldNames()}">
+                        <th scope="col" th:text="${fieldName}"></th>
+                      </div>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="fail, i: ${failList}">
+                      <th scope="row" th:text="${i.index + 1}"></th>
+                      <td th:text="${fail.dateTime}"></td>
+                      <td th:text="${fail.status}"></td>
+                      <div th:each="fieldName : ${fail.getJsonNodeArgsInfo().fieldNames()}">
+                        <td th:text="${fail.getJsonNodeArgsInfo().get(fieldName)}"></td>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div><!-- table-responsive -->
+              <button class="btn btn-gray-700" onclick="ExportToExcel1('xlsx')">Export</button>
+            </div>
+          </div><!-- col -->
+        </div><!-- row -->
+
+        <div class="row row-sm mg-b-20">
+          <div class="col-lg-7 col-xl-12 mg-t-20 mg-lg-t-0">
+            <div class="card card-table-one">
+              <h6 class="card-title">All Transactions</h6>
+              <p class="dashboard-text">Top 500 results</p>
+
+              <p class="content-text mg-b-20" th:if="${#lists.isEmpty(failList)}">No Transactions</p>
+              <div class="table-responsive" style="height: 300px; overflow-y:scroll;">
+                <table id="table2" class="table table-striped " th:unless="${#lists.isEmpty(failList)}"
+                  style="height: 400px; margin-bottom: 5px;">
+                  <thead>
+                    <tr>
+                      <th style="width:50px; " scope="col">ID</th>
+                      <!-- <th scope="col">Amount</th> -->
+                      <th scope="col">Date</th>
+                      <th scope="col">Status</th>
+                      <div th:each="fieldName : ${allList[0].getJsonNodeArgsInfo().fieldNames()}">
+                        <th scope="col" th:text="${fieldName}"></th>
+                      </div>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="all, i: ${allList}">
+                      <th scope="row" th:text="${i.index + 1}"></th>
+                      <td th:text="${all.dateTime}"></td>
+                      <td th:text="${all.status}"></td>
+                      <div th:each="fieldName : ${all.getJsonNodeArgsInfo().fieldNames()}">
+                        <td th:text="${all.getJsonNodeArgsInfo().get(fieldName)}"></td>
+                      </div>
+                    </tr>
+                  </tbody>
+                </table>
+              </div><!-- table-responsive -->
+              <button class="btn btn-gray-700" onclick="ExportToExcel2('xlsx')">Export</button>
+            </div>
+          </div><!-- col -->
+        </div><!-- row -->
+
+      </div><!-- content-body -->
+
+    </div>
+  </div><!-- content -->
+
+  <div class="footer ht-40">
+    <div class="container ht-100p pd-t-0-f">
+      <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © g1t2.com</span>
+    </div><!-- container -->
+  </div><!-- footer -->
+
+
+  <script type="text/javascript">
+    function ExportToExcel1(type, fn, dl) {
+      var elt = document.getElementById('table1');
+      var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+      return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+        XLSX.writeFile(wb, fn || ('TransactionFailures.' + (type || 'xlsx')));
+    }
+
+    function ExportToExcel2(type, fn, dl) {
+      var elt = document.getElementById('table2');
+      var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+      return dl ?
+        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+        XLSX.writeFile(wb, fn || ('Transactions.' + (type || 'xlsx')));
+    }
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,239 @@
+@charset "UTF-8";
+/* html {
+  box-sizing: border-box;
+  font-family: "Segoe UI";
+  font-size: 13px;
+} */
+
+
+*:before,
+*:after {
+  font-family: "Segoe UI";
+  font-size: 13px;
+  box-sizing:inherit;
+  
+}
+/* .overlay {
+  position: fixed;
+  z-index: 99998;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+} */
+
+.em-edit-day {
+  text-align: left;
+  position: relative;
+  z-index: 9999;
+  width: auto;
+  height: auto;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  background: #fff;
+  /* box-shadow: 0 0 6px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.32); */
+  clear: both;
+  border-radius: 2px;
+}
+
+.em-day-header {
+  margin-top: 20px;
+  height: 30px;
+  background: #7987a1;
+  color: #fff;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24); */
+}
+
+.emp-head,
+.job-head {
+  display: inline-block;
+  float: left;
+  padding: 5px;
+  height: 20px;
+  text-align: center;
+  font-weight: bold;
+  
+}
+
+.emp-head {
+  width: 20%;
+  
+}
+
+/* .emp-head:before {
+  font-family: FontAwesome;
+  content: "";
+  padding: 0 5px;
+}
+
+.vhc-head:before {
+  font-family: FontAwesome;
+  content: "";
+  padding: 0 5px;
+} */
+
+.job-head {
+  width: 50%;
+}
+
+/* .job-head:after {
+  font-family: FontAwesome;
+  content: "";
+  padding: 0 5px;
+} */
+
+.em-day-body {
+  height: calc(100% - 30px);
+  
+}
+
+.em-day-content {
+  height: 100%;
+  display: inline-block;
+  float: left;
+  padding: 5px ;
+  
+  /* overflow-x: visible; */
+}
+
+.employees {
+  width: 30%;
+}
+
+.jobs {
+  width: 70%;
+  
+  /* z-index: -1; */
+}
+
+.content {
+  width: 100%;
+  min-height: 700px;
+
+  height: fit-content;
+  justify-content: center;
+  /* background: #e0e0e0; */
+  /* box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.12), inset 0 2px 4px rgba(0, 0, 0, 0.24); */
+  padding: 1px;
+  border-radius: 2px;
+  border: 1px solid #cdd4e0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/*this is when u click */
+.emp {
+  min-width: max-content;
+
+  display: inline-block;
+  height:min-content;
+  margin: 0 5px 10px;
+  z-index: 10;
+  background: #fff;
+  padding: 5px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
+  border-radius: 2px;
+  transition: box-shadow 0.1s ease;
+}
+.emp + .emp{
+  margin-top: 10px;
+  
+}
+
+.emp.dragged {
+  min-width: max-content;
+
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.16), 0 6px 12px rgba(0, 0, 0, 0.32);
+  background: #fff;
+  z-index: 11;
+}
+
+.emp.dropped.dragged {
+  display: inline-block;
+  min-width: max-content;
+
+  position: relative;
+  z-index: 10;
+  background: #fff;
+  padding: 5px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
+  border-radius: 2px;
+  transition: box-shadow 0.1s ease;
+
+}
+
+.emp.dropped {
+  min-width: max-content;
+
+  position: static !important;
+  padding: 0;
+  box-shadow: none;
+  margin: 0;
+  display: inline;
+  background: transparent;
+  color: #004d40;
+}
+
+
+/* centre */
+.job {
+  width: 23%;
+  height: 100px;
+  background: white;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24);
+  margin: 0 5px 10px;
+  border-radius: 2px;
+}
+
+.job .job-name {
+  padding: 5px; 
+  height: 30px;
+  background: #009688;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  
+}
+.job .job-emp {
+  position:relative;
+  padding: 5px;
+  padding-left: 10px;
+  height: 50px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  transition: all 0.2s ease;
+  /* overflow: auto; */
+}
+
+.job .job-emp:before {
+
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  text-align: center;
+  width: 30px;
+  color: #80cbc4;
+  border-right: 1px dotted #80cbc4;
+
+}
+
+.job .job-emp.active {
+  background: #b2dfdb;
+}
+.job .job-emp.active:before {
+  color: #009688;
+  border-color: #009688;
+}
+
+.headers{
+  border: 1px solid #cdd4e0;
+  height: 100%;
+  min-height: 700px;
+}
+
