@@ -3,6 +3,13 @@
 
 The objective of this project is to develop a Digital Remittance Portal for TechG.
 
+The Digital Remittance Portal is a web application which helps to automate the process of checking if the required fields are mapped correctly
+upon transaction using the Springboot framework and the PostgreSQL database.
+
+2 key functions:
+- Allow new users to upload transaction headers into the portal and check if the fields are mapped properly against Single Source of Truth (SSOT).
+The system will also help by recommending the suggested mapping. Users can edit if it is not appropriate and submit for the onboarding process.
+- The user can upload transactions and the field contents will be mapped and directed to the backend API to process the transaction.
 
 
 
